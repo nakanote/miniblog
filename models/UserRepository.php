@@ -24,6 +24,14 @@ class UserRepository extends DbRepository
         ));
     }
 
+    // ユーザの削除
+    public function delete($user_id)
+    {
+        $sql = "DELETE FROM user WHERE id = :user_id";
+
+        $stmt = $this->execute($sql, array(':user_id' => $user_id));
+    }
+
     public function hashPassword($password)
     {
         return sha1($password . 'GAEF84u8aAtjijfa7663');

@@ -15,6 +15,9 @@
     <li>
         <a href="<?php echo $base_url; ?>/account/signout">ログアウト</a>
     </li>
+    <li>
+        <a href="<?php echo $base_url; ?>/account/delete">アカウント削除</a>
+    </li>
 </ul>
 
 <h3>フォロー中</h3>

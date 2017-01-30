@@ -192,4 +192,17 @@ class AccountController extends Controller
 
         return $this->redirect('/account');
     }
+
+    // アカウント削除
+    public function deleteAction()
+    {
+        $user = $this->session->get('user');
+
+        $this->db_manager->get('User')->delete($user['id']);
+        $this->session->clear();
+        $this->session->setAuthenticated(false);
+
+        return $this->redirect('/');
+    }
+
 }
