@@ -3,9 +3,11 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title><?php if (isset($title)) :
-        echo $this->escape($title) . ' - ';
-endif; ?>Mini Blog</title>
+<?php if (isset($title)) : ?>
+    <title><?php echo $this->escape($title) . ' - '; ?>Mini Blog</title>
+<?php else : ?>
+    <title>Mini Blog</title>
+<?php endif; ?>
 
     <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $base_url; ?>/css/style.css" />
 </head>
