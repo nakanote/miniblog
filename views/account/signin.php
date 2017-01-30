@@ -9,7 +9,7 @@
 <form action="<?php echo $base_url; ?>/account/authenticate" method="post">
     <input type="hidden" name="_token" value="<?php echo $this->escape($_token); ?>" />
 
-    <?php if (isset($errors) && count($errors) > 0): ?>
+    <?php if (isset($errors) && count($errors) > 0) : ?>
         <?php echo $this->render('errors', array('errors' => $errors)); ?>
     <?php endif; ?>
 

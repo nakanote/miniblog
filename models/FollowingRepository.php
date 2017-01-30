@@ -7,7 +7,8 @@
  */
 class FollowingRepository extends DbRepository
 {
-    public function insert($user_id, $following_id) {
+    public function insert($user_id, $following_id)
+    {
         $sql = "INSERT INTO following VALUES(:user_id, :following_id)";
 
         $stmt = $this->execute($sql, array(

@@ -44,15 +44,15 @@ class AccountController extends Controller
 
         if (!strlen($user_name)) {
             $errors[] = 'ユーザIDを入力してください';
-        } else if (!preg_match('/^\w{3,20}$/', $user_name)) {
+        } elseif (!preg_match('/^\w{3,20}$/', $user_name)) {
             $errors[] = 'ユーザIDは半角英数字およびアンダースコアを3 ～ 20 文字以内で入力してください';
-        } else if (!$this->db_manager->get('User')->isUniqueUserName($user_name)) {
+        } elseif (!$this->db_manager->get('User')->isUniqueUserName($user_name)) {
             $errors[] = 'ユーザIDは既に使用されています';
         }
 
         if (!strlen($password)) {
             $errors[] = 'パスワードを入力してください';
-        } else if (4 > strlen($password) || strlen($password) > 30) {
+        } elseif (4 > strlen($password) || strlen($password) > 30) {
             $errors[] = 'パスワードは4 ～ 30 文字以内で入力してください';
         }
 
@@ -184,7 +184,7 @@ class AccountController extends Controller
         $user = $this->session->get('user');
 
         $following_repository = $this->db_manager->get('Following');
-        if ($user['id'] !== $follow_user['id'] 
+        if ($user['id'] !== $follow_user['id']
             && !$following_repository->isFollowing($user['id'], $follow_user['id'])
         ) {
             $following_repository->insert($user['id'], $follow_user['id']);
@@ -204,5 +204,4 @@ class AccountController extends Controller
 
         return $this->redirect('/');
     }
-
 }

@@ -3,8 +3,9 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title><?php if (isset($title)): echo $this->escape($title) . ' - ';
-        endif; ?>Mini Blog</title>
+    <title><?php if (isset($title)) :
+        echo $this->escape($title) . ' - ';
+endif; ?>Mini Blog</title>
 
     <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $base_url; ?>/css/style.css" />
 </head>
@@ -15,10 +16,10 @@
 
     <div id="nav">
         <p>
-            <?php if ($session->isAuthenticated()): ?>
+            <?php if ($session->isAuthenticated()) : ?>
                 <a href="<?php echo $base_url; ?>/">ホーム</a>
                 <a href="<?php echo $base_url; ?>/account">アカウント</a>
-            <?php else: ?>
+            <?php else : ?>
                 <a href="<?php echo $base_url; ?>/account/signin">ログイン</a>
                 <a href="<?php echo $base_url; ?>/account/signup">アカウント登録</a>
             <?php endif; ?>

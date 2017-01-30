@@ -103,7 +103,7 @@ class Request
 
         if (0 === strpos($request_uri, $script_name)) {
             return $script_name;
-        } else if (0 === strpos($request_uri, dirname($script_name))) {
+        } elseif (0 === strpos($request_uri, dirname($script_name))) {
             return rtrim(dirname($script_name), '/');
         }
 

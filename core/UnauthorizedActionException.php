@@ -5,4 +5,6 @@
  *
  * @author Katsuhiro Ogawa <fivestar@nequal.jp>
  */
-class UnauthorizedActionException extends Exception {};
+class UnauthorizedActionException extends Exception
+{
+};

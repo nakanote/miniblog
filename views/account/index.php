@@ -22,9 +22,9 @@
 
 <h3>フォロー中</h3>
 
-<?php if (count($followings) > 0): ?>
+<?php if (count($followings) > 0) : ?>
 <ul>
-    <?php foreach ($followings as $following): ?>
+    <?php foreach ($followings as $following) : ?>
     <li>
         <a href="<?php echo $base_url; ?>/user/<?php echo $this->escape($following['user_name']); ?>">
             <?php echo $this->escape($following['user_name']); ?>
