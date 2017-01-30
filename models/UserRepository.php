@@ -27,8 +27,16 @@ class UserRepository extends DbRepository
     // ユーザの削除
     public function delete($user_id)
     {
-        $sql = "DELETE FROM user WHERE id = :user_id";
+        // フォローデータの削除
+        $sql = "DELETE FROM following WHERE user_id = :user_id or following_id = :following_id";
+        $stmt = $this->execute($sql, array(':user_id' => $user_id, ':following_id' => $user_id));
 
+        // コメントデータの削除
+        $sql = "DELETE FROM status WHERE user_id = :user_id";
+        $stmt = $this->execute($sql, array(':user_id' => $user_id));
+
+        // ユーザデータの削除
+        $sql = "DELETE FROM user WHERE id = :user_id";
         $stmt = $this->execute($sql, array(':user_id' => $user_id));
     }
 
