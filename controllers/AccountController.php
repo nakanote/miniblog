@@ -7,7 +7,7 @@
  */
 class AccountController extends Controller
 {
-    protected $auth_actions = array('index', 'signout', 'follow');
+    protected $auth_actions = array('index', 'signout', 'follow', 'delete', 'password');
 
     public function signupAction()
     {
@@ -40,7 +40,7 @@ class AccountController extends Controller
         $user_name = $this->request->getPost('user_name');
         $password = $this->request->getPost('password');
 
-        $errors = array();
+        $errors = [];
 
         if (!strlen($user_name)) {
             $errors[] = 'ユーザIDを入力してください';
@@ -50,11 +50,8 @@ class AccountController extends Controller
             $errors[] = 'ユーザIDは既に使用されています';
         }
 
-        if (!strlen($password)) {
-            $errors[] = 'パスワードを入力してください';
-        } elseif (4 > strlen($password) || strlen($password) > 30) {
-            $errors[] = 'パスワードは4 ～ 30 文字以内で入力してください';
-        }
+        // パスワードチェック
+        $errors = $this->checkPassword($errors, $password);
 
         if (count($errors) === 0) {
             $this->db_manager->get('User')->insert($user_name, $password);
@@ -203,5 +200,84 @@ class AccountController extends Controller
         $this->session->setAuthenticated(false);
 
         return $this->redirect('/');
+    }
+
+    // パスワード変更
+    public function passwordAction()
+    {
+        return $this->render(array(
+            'password'  => '',
+            'new_password'  => '',
+            'new_password_confirm'  => '',
+            '_token'    => $this->generateCsrfToken('account/password'),
+        ));
+    }
+
+    // パスワード変更
+    public function editPasswordAction()
+    {
+        // ワンタイムトークンのチェック
+        $token = $this->request->getPost('_token');
+        if (!$this->checkCsrfToken('account/password', $token)) {
+            return $this->redirect('/account/password');
+        }
+
+        // セッションからユーザID取得
+        $user = $this->session->get('user');
+        // POSTデータからパスワード取得
+        $password = $this->request->getPost('password');
+        $new_password = $this->request->getPost('new_password');
+        $new_password_confirm = $this->request->getPost('new_password_confirm');
+
+        // エラー配列
+        $errors = [];
+        // パスワードチェック
+        $errors = $this->checkPassword($errors, $password, "現在の");
+        $errors = $this->checkPassword($errors, $new_password, "新しい");
+        $errors = $this->checkPassword($errors, $new_password_confirm, "確認用の");
+        
+        // 現在のパスワードが正しいかチェック
+        $user_repository = $this->db_manager->get('User');
+        $userdb = $user_repository->fetchByUserName($user['user_name']);
+        if (!$userdb
+            || ($userdb['password'] !== $user_repository->hashPassword($password))
+        ) {
+            $errors[] = '現在のパスワードが不正です';
+        }
+
+        // 新しいパスワードと確認用パスワードが正しいかチェック
+        if ($new_password !== $new_password_confirm) {
+            $errors[] = '新しいパスワードと確認用パスワードが一致しません';
+        }
+
+        // エラーが何もないとき
+        if (count($errors) === 0) {
+            // パスワード変更
+            $this->db_manager->get('User')->updatePassword($user['id'], $new_password);
+            $this->session->setAuthenticated(true);
+
+            return $this->redirect('/account');
+        }
+
+        // エラーがあったとき
+        return $this->render(array(
+            'password' => $password,
+            'new_password'  => $new_password,
+            'new_password_confirm'  => $new_password_confirm,
+            'errors'    => $errors,
+            '_token'    => $this->generateCsrfToken('account/password'),
+        ), 'password');
+    }
+
+    // パスワードチェック
+    private function checkPassword($errors, $password, $type = "")
+    {
+        if (!strlen($password)) {
+            $errors[] = $type . 'パスワードを入力してください';
+        } elseif (4 > strlen($password) || strlen($password) > 30) {
+            $errors[] = $type . 'パスワードは4 ～ 30 文字以内で入力してください';
+        }
+
+        return $errors;
     }
 }

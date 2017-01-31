@@ -75,4 +75,15 @@ class UserRepository extends DbRepository
 
         return $this->fetchAll($sql, array(':user_id' => $user_id));
     }
+    
+    // パスワード変更
+    public function updatePassword($user_id, $password)
+    {
+        // パスワードのハッシュ化
+        $password = $this->hashPassword($password);
+
+        // パスワード変更
+        $sql = "UPDATE user SET password = :password WHERE id = :user_id";
+        $stmt = $this->execute($sql, array(':password' => $password, ':user_id' => $user_id));
+    }
 }
