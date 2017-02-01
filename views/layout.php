@@ -1,15 +1,23 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="ja">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <?php if (isset($title)) : ?>
     <title><?php echo $this->escape($title) . ' - '; ?>Mini Blog</title>
 <?php else : ?>
     <title>Mini Blog</title>
 <?php endif; ?>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $base_url; ?>/css/style.css" />
+    <link href="<?php echo $base_url; ?>/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo $base_url; ?>/css/style.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
 <body>
     <div id="header">
@@ -31,5 +39,8 @@
     <div id="main">
         <?php echo $_content; ?>
     </div>
+
+    <script src="<?php echo $base_url; ?>/js/jquery.min.js"></script>
+    <script src="<?php echo $base_url; ?>/js/bootstrap.min.js"></script>
 </body>
 </html>
