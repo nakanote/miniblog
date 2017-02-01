@@ -6,13 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <?php if (isset($title)) : ?>
-    <title><?php echo $this->escape($title) . ' - '; ?>Mini Blog</title>
+    <title><?php echo $this->escape($title); ?> - Mini Blog</title>
 <?php else : ?>
     <title>Mini Blog</title>
 <?php endif; ?>
 
     <link href="<?php echo $base_url; ?>/css/bootstrap.min.css" rel="stylesheet">
     <link href="<?php echo $base_url; ?>/css/style.css" rel="stylesheet">
+<?php if (isset($css)) : ?>
+    <link href="<?php echo $base_url; ?>/css/<?php echo $this->escape($css); ?>" rel="stylesheet">
+<?php endif; ?>
 
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -42,5 +45,9 @@
 
     <script src="<?php echo $base_url; ?>/js/jquery.min.js"></script>
     <script src="<?php echo $base_url; ?>/js/bootstrap.min.js"></script>
+<?php if (isset($js)) : ?>
+    <script src="<?php echo $base_url; ?>/js/<?php echo $this->escape($js); ?>"></script>
+<?php endif; ?>
+
 </body>
 </html>
