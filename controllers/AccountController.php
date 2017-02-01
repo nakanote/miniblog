@@ -203,19 +203,19 @@ class AccountController extends Controller
     }
 
     // パスワード変更
-    public function passwordAction()
+    public function passwordAction($params)
     {
-        return $this->render(array(
-            'password'  => '',
-            'new_password'  => '',
-            'new_password_confirm'  => '',
-            '_token'    => $this->generateCsrfToken('account/password'),
-        ));
-    }
+        // パスワード初期画面の時
+        if (!array_key_exists('control', $params) || ($params['control'] !== "edit")) {
+            return $this->render(array(
+                'password'  => '',
+                'new_password'  => '',
+                'new_password_confirm'  => '',
+                '_token'    => $this->generateCsrfToken('account/password'),
+            ));
+        }
 
-    // パスワード変更
-    public function editPasswordAction()
-    {
+        // パスワード変更処理
         // ワンタイムトークンのチェック
         $token = $this->request->getPost('_token');
         if (!$this->checkCsrfToken('account/password', $token)) {
@@ -237,12 +237,14 @@ class AccountController extends Controller
         $errors = $this->checkPassword($errors, $new_password_confirm, "確認用の");
         
         // 現在のパスワードが正しいかチェック
-        $user_repository = $this->db_manager->get('User');
-        $userdb = $user_repository->fetchByUserName($user['user_name']);
-        if (!$userdb
-            || ($userdb['password'] !== $user_repository->hashPassword($password))
-        ) {
-            $errors[] = '現在のパスワードが不正です';
+        if (strlen($password)) {
+            $user_repository = $this->db_manager->get('User');
+            $userdb = $user_repository->fetchByUserName($user['user_name']);
+            if (!$userdb
+                || ($userdb['password'] !== $user_repository->hashPassword($password))
+            ) {
+                $errors[] = '現在のパスワードが不正です';
+            }
         }
 
         // 新しいパスワードと確認用パスワードが正しいかチェック
