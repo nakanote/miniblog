@@ -72,6 +72,7 @@ abstract class Controller
         $defaults = array(
             'request'  => $this->request,
             'base_url' => $this->request->getBaseUrl(),
+            'path'     => $this->request->getPathInfo(),
             'session'  => $this->session,
         );
 

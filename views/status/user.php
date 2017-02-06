@@ -1,4 +1,5 @@
 <?php $this->setLayoutVar('title', $user['user_name']) ?>
+<?php $this->setLayoutVar('css', 'status/index.css') ?>
 
 <h2><?php echo $this->escape($user['user_name']); ?></h2>
 
@@ -15,8 +16,8 @@
 <?php endif; ?>
 <?php endif; ?>
 
-<div id="statuses">
-    <?php foreach ($statuses as $status) : ?>
-    <?php echo $this->render('status/status', array('status' => $status)); ?>
-    <?php endforeach; ?>
-</div>
+<ul class="timeline">
+<?php foreach ($statuses as $key => $status) : ?>
+<?php echo $this->render('status/status', array('key' => $key, 'status' => $status)); ?>
+<?php endforeach; ?>
+</ul>

@@ -1,4 +1,5 @@
 <?php $this->setLayoutVar('title', 'ホーム') ?>
+<?php $this->setLayoutVar('css', 'status/index.css') ?>
 
 <h2>ホーム</h2>
 
@@ -9,14 +10,14 @@
     <?php echo $this->render('errors', array('errors' => $errors)) ?>
     <?php endif; ?>
 
-    <textarea name="body" rows="2" cols="60"><?php echo $this->escape($body); ?></textarea>
+    <textarea class="form-control" name="body" rows="2" cols="60"><?php echo $this->escape($body); ?></textarea>
     <p>
-        <input type="submit" value="発言" />
+        <input class="btn btn-primary" type="submit" value="発言" />
     </p>
 </form>
 
-<div id="statuses">
-    <?php foreach ($statuses as $status) : ?>
-    <?php echo $this->render('status/status', array('status' => $status)); ?>
-    <?php endforeach; ?>
-</div>
+<ul class="timeline">
+<?php foreach ($statuses as $key => $status) : ?>
+<?php echo $this->render('status/status', array('key' => $key, 'status' => $status)); ?>
+<?php endforeach; ?>
+</ul>
