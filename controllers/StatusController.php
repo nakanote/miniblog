@@ -101,7 +101,7 @@ class StatusController extends Controller
 
         return $this->render(array('status' => $status));
     }
-
+/*
     public function signinAction()
     {
         if ($this->session->isAuthenticated()) {
@@ -114,4 +114,5 @@ class StatusController extends Controller
             '_token'    => $this->generateCsrfToken('account/signin'),
         ));
     }
+*/
 }
