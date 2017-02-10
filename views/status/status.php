@@ -1,4 +1,4 @@
-<li<?php echo (($key % 2) === 1) ? " class=\"timeline-inverted\"" : ""; ?>>
+<li name="comment[]" data-id="<?php echo $status['id']; ?>"<?php echo ((boolean)$status['flg_own']) ? " class=\"timeline-inverted\"" : ""; ?>>
     <div class="timeline-badge"><i class="glyphicon glyphicon-check"></i></div>
     <div class="timeline-panel">
         <div class="timeline-body">

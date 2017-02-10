@@ -7,7 +7,7 @@
  */
 class StatusController extends Controller
 {
-    protected $auth_actions = array('index', 'post');
+    protected $auth_actions = array('index', 'post', 'offset');
 
     public function indexAction()
     {
@@ -22,20 +22,56 @@ class StatusController extends Controller
         ));
     }
 
+    // 最新のコメントの差分を取得
+    public function offsetAction($params)
+    {
+        $user = $this->session->get('user');
+        $statuses = $this->db_manager->get('Status')
+            ->fetchAllPersonalArchivesByUserId($user['id'], $params['id']);
+
+        // リストだけ出力（レイアウトなし）
+        return $this->render(array(
+            'statuses' => $statuses,
+            'body'     => '',
+        ), null, '');
+    }
+
+    // 古いコメントの読み込み
+    public function pageAction($params)
+    {
+        $user = $this->session->get('user');
+        $statuses = $this->db_manager->get('Status')
+            ->fetchAllPersonalArchivesByUserId($user['id'], $params['id'], false);
+
+        // リストだけ出力（レイアウトなし）
+        return $this->render(array(
+            'statuses' => $statuses,
+            'body'     => '',
+        ), 'offset', '');
+    }
+
     public function postAction()
     {
+        // 結果用配列
+        $results = [];
+        $errors = [];
+
         if (!$this->request->isPost()) {
             $this->forward404();
         }
 
         $token = $this->request->getPost('_token');
         if (!$this->checkCsrfToken('status/post', $token)) {
-            return $this->redirect('/');
+            $errors[] = 'トークンの取得に失敗しました。もう一度送信してください';
+            $results['result'] = "fault";
+            $results['_token'] = $this->generateCsrfToken('status/post');
+            $results['html'] = $this->render(array(
+                'errors' => $errors,
+            ), '../errors', '');
         }
 
         $body = $this->request->getPost('body');
 
-        $errors = array();
 
         if (!strlen($body)) {
             $errors[] = 'ひとことを入力してください';
@@ -43,23 +79,36 @@ class StatusController extends Controller
             $errors[] = 'ひとことは200 文字以内で入力してください';
         }
 
+        // 入力エラーのない場合
         if (count($errors) === 0) {
+            // コメント挿入
             $user = $this->session->get('user');
             $this->db_manager->get('Status')->insert($user['id'], $body);
 
-            return $this->redirect('/');
+            // 最新コメント取得
+            $user = $this->session->get('user');
+            $statuses = $this->db_manager->get('Status')
+                ->fetchAllPersonalArchivesByUserId($user['id'], $this->request->getPost('offset'));
+
+            // 成功の時
+            $results['result'] = "success";
+            $results['_token'] = $this->generateCsrfToken('status/post');
+            $results['html'] = $this->render(array(
+                'statuses' => $statuses,
+            ), 'offset', '');
+            // JSON形式で返信
+            return json_encode($results);
         }
 
-        $user = $this->session->get('user');
-        $statuses = $this->db_manager->get('Status')
-            ->fetchAllPersonalArchivesByUserId($user['id']);
-
-        return $this->render(array(
-            'errors'   => $errors,
-            'body'     => $body,
-            'statuses' => $statuses,
-            '_token'   => $this->generateCsrfToken('status/post'),
-        ), 'index');
+        // 失敗の時
+        $results['result'] = "fault";
+        $results['_token'] = $this->generateCsrfToken('status/post');
+        $results['html'] = $this->render(array(
+            'errors' => $errors,
+        ), '../errors', '');
+        
+        // JSON形式で返信
+        return json_encode($results);
     }
 
     public function userAction($params)
@@ -101,18 +150,4 @@ class StatusController extends Controller
 
         return $this->render(array('status' => $status));
     }
-/*
-    public function signinAction()
-    {
-        if ($this->session->isAuthenticated()) {
-            return $this->redirect('/account');
-        }
-
-        return $this->render(array(
-            'user_name' => '',
-            'password'  => '',
-            '_token'    => $this->generateCsrfToken('account/signin'),
-        ));
-    }
-*/
 }

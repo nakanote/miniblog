@@ -19,8 +19,12 @@ class MiniBlogApplication extends Application
         return array(
             '/'
                 => array('controller' => 'status', 'action' => 'index'),
-            '/status/post'
-                => array('controller' => 'status', 'action' => 'post'),
+            '/status/offset/:id'
+                => array('controller' => 'status', 'action' => 'offset'),
+            '/status/page/:id'
+                => array('controller' => 'status', 'action' => 'page'),
+            '/status/:action'
+                => array('controller' => 'status'),
             '/user/:user_name'
                 => array('controller' => 'status', 'action' => 'user'),
             '/user/:user_name/status/:id'
