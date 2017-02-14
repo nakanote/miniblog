@@ -44,7 +44,7 @@ class StatusRepository extends DbRepository
     public function fetchAllByUserId($user_id)
     {
         $sql = "
-            SELECT a.*, u.user_name
+            SELECT a.*, u.user_name, CASE WHEN a.user_id = :user_id THEN true ELSE false END as flg_own
                 FROM status a
                     LEFT JOIN user u ON a.user_id = u.id
                 WHERE u.id = :user_id
@@ -57,7 +57,7 @@ class StatusRepository extends DbRepository
     public function fetchByIdAndUserName($id, $user_name)
     {
         $sql = "
-            SELECT a.* , u.user_name
+            SELECT a.* , u.user_name, true as flg_own
                 FROM status a
                     LEFT JOIN user u ON u.id = a.user_id
                 WHERE a.id = :id

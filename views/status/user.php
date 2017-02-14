@@ -16,7 +16,7 @@
 <?php endif; ?>
 <?php endif; ?>
 
-<ul class="timeline">
+<ul class="timeline" id="timeline">
 <?php foreach ($statuses as $key => $status) : ?>
 <?php echo $this->render('status/status', array('key' => $key, 'status' => $status)); ?>
 <?php endforeach; ?>

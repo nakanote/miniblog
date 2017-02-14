@@ -1,5 +1,7 @@
 <li name="comment[]" data-id="<?php echo $status['id']; ?>"<?php echo ((boolean)$status['flg_own']) ? " class=\"timeline-inverted\"" : ""; ?>>
-    <div class="timeline-badge"><i class="glyphicon glyphicon-check"></i></div>
+    <div class="timeline-badge">
+        <div class="user-icon user-icon-<?php echo mb_substr($status['user_id'], -1, 1); ?>"><p><?php echo mb_substr($status['user_name'], 0, 1); ?></p></div>
+    </div>
     <div class="timeline-panel">
         <div class="timeline-body">
             <p><?php echo $this->escape($status['body']); ?></p>

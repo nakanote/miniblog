@@ -3,3 +3,66 @@ body {
     background-color: #eee;
 }
 
+.user-icon .red {
+    background-color: red;
+}
+
+.user-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -o-border-radius: 50%;
+    -ms-border-radius: 50%;
+    font-size: 20px;
+    color: #FFF;
+    background-color: crimson;
+    text-align: center;
+}
+
+.user-icon-0 {
+    background-color: darkorchid;
+}
+
+.user-icon-1 {
+    background-color: dimgray;
+}
+
+.user-icon-2 {
+    background-color: darkolivegreen;
+}
+
+.user-icon-3 {
+    background-color: midnightblue;
+}
+
+.user-icon-4 {
+    background-color: darkgreen;
+}
+
+.user-icon-5 {
+    background-color: darkslateblue;
+}
+
+.user-icon-6 {
+    background-color: slateblue;
+}
+
+.user-icon-7 {
+    background-color: firebrick;
+}
+
+.user-icon-8 {
+    background-color: indigo;
+}
+
+.user-icon-9 {
+    background-color: sienna;
+}
+
+.user-icon p {
+    position: relative;
+    top:50%;
+    transform: translateY(-50%);
+}

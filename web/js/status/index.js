@@ -92,8 +92,6 @@ $(function(){
         var offset = getOldCommentID();
         flgPageLoading = true;
 
-console.log(offset);
-
         $.ajax({
             type: 'GET',
             url: BASE_URL + '/status/page/' + offset,
